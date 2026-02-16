@@ -1,46 +1,48 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use Illuminate\Http\Request;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class WelcomeController extends Controller
+class User extends Authenticatable
 {
-    public function index()
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        $pageTitle = 'Portal Akademik STMIK KMU';
-        $moduleTitle = 'Modul 1: Laravel 12';
-        $subtitle = 'Pengembangan Web Kontemporer Menggunakan Framework Laravel Terkini';
-        
-        $features = [
-            [
-                'title' => 'Performa Teroptimasi',
-                'description' => 'Laravel 12 menghadirkan peningkatan signifikan dalam hal kinerja platform pengembangan perangkat lunak dan aplikasi web.'
-            ],
-            [
-                'title' => 'Arsitektur Kode yang Terstruktur',
-                'description' => 'Kerangka kerja yang mengintegrasikan pola desain modern dengan penataan kode yang rapi dan mudah dipelihara.'
-            ],
-            [
-                'title' => 'Pendekatan Kontemporer',
-                'description' => 'Memanfaatkan perangkat lunak mutakhir untuk pengoptimalan performa dan pengalaman pengguna.'
-            ]
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
-
-        $technologies = [
-            'Laravel 12',
-            'Tailwind CSS',
-            'MySQL',
-            'RESTful API',
-            'Git Version Control'
-        ];
-
-        return view('welcome', compact(
-            'pageTitle',
-            'moduleTitle',
-            'subtitle',
-            'features',
-            'technologies'
-        ));
     }
 }
